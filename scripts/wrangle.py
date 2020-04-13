@@ -1,7 +1,7 @@
 import pandas as pd
 import requests
 import plotly.graph_objs as go
-import plotly.express as px
+
 
 def data_wrangling(dataset):
     """Clean world bank data for a visualizaiton dashboard
