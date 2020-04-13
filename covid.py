@@ -1,0 +1,1 @@
+from covidapp import app
