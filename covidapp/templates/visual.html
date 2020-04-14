@@ -26,7 +26,7 @@
 
   <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
     <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-		<li class="nav-item">
+        <li class="nav-item">
 			<a class="nav-link" href="/index">Data</a>
 		  </li>
 		<li class="nav-item">
@@ -62,7 +62,7 @@
 
 			<h2 id="tag-line">Covid'19 India Dashboard</h2>
 			<h4 id="tag-line" class="text-muted">Total covid'19 cases in India</h4>
-			<table class="table">
+            <table class="table">
 				<thead>
 				  <tr>
 					<th scope="col">Total Cases</th>
@@ -79,8 +79,8 @@
 						<td style="color: red;"><strong>{{tot[2]}}</strong></td>
 					  </tr>
 
-				</tbody>
-			
+                </tbody>
+            </table>
 		</div>
 		
 		<hr>
@@ -91,54 +91,28 @@
 		<!--charts-->		
 		<div id="charts" class="container mt-3 text-center">
 					
+			<!--top two charts-->		
+			<div class="row">
+				<div class="col-12">
+					<h4>Line chart of no. of cases increasing daily</h4>
+					<div id="chart4">
+						<div id="{{ids[2]}}" style="margin-bottom:  50px;"></div>
+					</div>
+				<div>
+				<div class="col-12">
+					<h4>Bar Chart</h4>
+					<div id="{{ids[0]}}" style=" margin-bottom: 50px;"></div>
+				</div>
+				<div class="col-12">
+					<h4>Pie Chart</h4>
+					<div id="{{ids[1]}}" style=" margin-top: 50px; margin-bottom: 50px;"></div>
+				</div>
+			</div>
 
 			<!--bottom two charts-->		
 			<div class="row mb-6">
 				<div class="col-12">	
-					<table class="table table-dark">
-						<h3 class="pt-12">Case State wise</h3>
-						<thead>
-						  <tr>
-							<th scope="col">State</th>
-							<th scope="col">Total Case</th>
-
-							<th scope="col">Recovered</th>
-							<th scope="col">Deaths</th>
-						  </tr>
-						</thead>
-						<tbody>
-							<div class="dropdown">
-									{%for i in range(all_states|length) %}
-									<tr>
-										<td class="nav-item dropdown dropleft">
-											<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-												{{all_states[i]}}
-											</a>
-											<div class="dropdown-menu" style="background-color: darkgrey;" aria-labelledby="navbarDropdownMenuLink">
-												{%for dis in district%}
-												 {%if dis[1] == all_states[i]%}
-											  <a class="dropdown-item " style="color: blue;" href="#">{{dis[0]}} :  {{dis[2]}}</a>
-											  {%endif%}
-											  {%endfor%}
-											</div>
-										</td>
-										
-									<td>{{all_cases[i]}}</td>
-									</tr>
-									{%endfor%}
-									
-
-
-							  </div>
-
-						</tbody>
-					  </table>
 				</div>
-				<div class="col-12">
-					<div id="chart4">
-						<div id=""></div>
-					</div>
-				<div>
 			</div>
 		
 		</div>
@@ -156,8 +130,12 @@
     	// plots the figure by id using Plotly
     	// id much match the div id above in the html
     	var figures = {{figureJSON | safe}};
-
-		// checks or unchecks the filter boxes based on the select all box
+		var ids = {{ids | safe}};
+		for(var i in figures) {
+			Plotly.plot(ids[i],
+				figures[i].data,
+				figures[i].layout || {});
+		};
 
     </script>
 
