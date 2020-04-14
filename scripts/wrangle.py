@@ -23,6 +23,7 @@ def data_wrangling(dataset):
     return data
 
 def return_data():
+
     '''
     Take the data  from  the covid19 india api
 
@@ -44,6 +45,59 @@ def return_data():
     stat_state = df_state.state.tolist()[1:]
     return d_tot,stat_confirmed,stat_active,stat_deaths,stat_recover,stat_state
 
+def map_fig():
+    '''
+    Funtion return the fig of the place effected in map
+
+    arguments: 
+          none
+    return:
+        map figure object
+    '''
+
+    world = data_wrangling('https://bing.com/covid/data')
+    world = pd.DataFrame(world)
+    world_tot = [world.totalConfirmed.tolist()[0],world.totalDeaths.tolist()[0],world.totalRecovered.tolist()[0]]
+    data_country = pd.DataFrame(world['areas'].tolist())
+    just=[]
+    l=[]
+    for i in range(len(data_country['areas'])):
+        for d in range(len(data_country['areas'][i])):
+            if len(data_country['areas'][i][d]['areas']) == 0:
+                just.append(data_country['areas'][i][d])
+            for j in data_country['areas'][i][d]['areas']:
+                l.append(j)
+    data_left =  pd.DataFrame(just)
+    data_state = pd.DataFrame(l)
+    data_state= data_state.append(data_left)
+    graph_map=[]
+    graph_map.append(go.Scattermapbox(
+        lat=data_state['lat'],
+        lon=data_state['long'],
+        mode='markers',
+        
+        marker=go.scattermapbox.Marker(
+            size=8
+        ),
+    text = "Place: "+data_state.displayName.map(str)+"<br>"+"TotalCase: "+data_state.totalConfirmed.map(str)+"<br>"+"TotalRecovered: " +data_state.totalRecovered.map(str)+"<br>"+"TotalDeaths: "+data_state.totalDeaths.map(str),
+    ))
+
+    layout_map=dict(hovermode='closest',
+   
+    mapbox=dict(
+        autosize=False,
+    width=500,
+    height=1000,
+        accesstoken='pk.eyJ1Ijoibm90aWtlODc3IiwiYSI6ImNrNWFxcmZmczEyeTgzbHAzYnRicmhxeWEifQ.xRoAbQ4k6NQ35Dw2AGaeBA',
+        bearing=0,
+        style='outdoors',
+        pitch=0,
+        zoom=5,
+    ))
+    
+    map_fig=[]
+    map_fig.append(dict(data=graph_map, layout=layout_map))
+    return map_fig,world_tot
 
 def return_fig():
     """Creates four plotly visualizations

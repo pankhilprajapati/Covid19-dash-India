@@ -4,7 +4,7 @@
 
 <head>
 
-<title>Covid'19 India Dashboard</title>
+<title>Covid'19 Dashboard</title>
 
 <!--import script files needed fro plotly and bootstrap-->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -19,7 +19,7 @@
 
 <!--navbar links-->		
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-   <a class="navbar-brand" href="#">Covid'19 India Dashboard</a>
+   <a class="navbar-brand" href="/index">Covid'19 Dashboard</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -28,6 +28,9 @@
     <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
 		<li class="nav-item">
 			<a class="nav-link" href="/index">Data</a>
+		  </li>
+		  <li class="nav-item">
+			<a class="nav-link" href="/worldmap">World Map</a>
 		  </li>
 		<li class="nav-item">
 			<a class="nav-link" href="/visual">Visuals</a>
@@ -69,6 +72,7 @@
 					<th scope="col">Active</th>
 					<th scope="col">Recovered</th>
 					<th scope="col">Deaths</th>
+					<th scope="col">Fatality Rate</th>
 				  </tr>
 				</thead>
 				<tbody>
@@ -77,6 +81,7 @@
 						<td style="color: orange;"><strong>{{tot[1]}}</strong></td>
 						<td style="color: green;"><strong>{{tot[3]}}</strong></td>
 						<td style="color: red;"><strong>{{tot[2]}}</strong></td>
+						<td style="color: orange;"><strong>{{fat}} %</strong></td>
 					  </tr>
 
 				</tbody>
@@ -102,7 +107,9 @@
 							<th scope="col">State</th>
 							<th scope="col">Total Case</th>
 
+							<th scope="col">Active</th>
 							<th scope="col">Recovered</th>
+
 							<th scope="col">Deaths</th>
 						  </tr>
 						</thead>

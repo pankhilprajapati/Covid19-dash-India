@@ -63,25 +63,24 @@
 		<!--chart descriptions-->		
 		<div id="middle-info" class="mt-3">
 
-			<h2 id="tag-line">Covid'19 India Dashboard</h2>
-			<h4 id="tag-line" class="text-muted">Total covid'19 cases in India</h4>
+			<h2 id="tag-line">Covid'19 World Map Dashboard</h2>
+			<h4 id="tag-line" class="text-muted">Total covid'19 cases in World</h4>
             <table class="table">
 				<thead>
 				  <tr>
 					<th scope="col">Total Cases</th>
-					<th scope="col">Active</th>
 					<th scope="col">Recovered</th>
-					<th scope="col">Deaths</th>
-					<th scope="col">Fatality Rate</th>
+                    <th scope="col">Deaths</th>
+                    <th scope="col">Fatality rate</th>
 				  </tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td style="color: black;"><strong>{{tot[0]}}</strong></td>
-						<td style="color: orange;"><strong>{{tot[1]}}</strong></td>
-						<td style="color: green;"><strong>{{tot[3]}}</strong></td>
-						<td style="color: red;"><strong>{{tot[2]}}</strong></td>
+						<td style="color: black;"><strong>{{world_tot[0]}}</strong></td>
+						<td style="color: green;"><strong>{{world_tot[2]}}</strong></td>
+                        <td style="color: red;"><strong>{{world_tot[1]}}</strong></td>
 						<td style="color: orange;"><strong>{{fat}} %</strong></td>
+                        
 					  </tr>
 
                 </tbody>
@@ -99,26 +98,12 @@
 			<!--top two charts-->		
 			<div class="row">
 				<div class="col-12">
-					<h4>Line chart of no. of cases increasing daily</h4>
-					<div id="chart4">
-						<div id="{{ids[2]}}" style="margin-bottom:  50px;"></div>
-					</div>
-				<div>
-				<div class="col-12">
-					<h4>Bar Chart</h4>
-					<div id="{{ids[0]}}" style=" margin-bottom: 50px;"></div>
-				</div>
-				<div class="col-12">
-					<h4>Pie Chart</h4>
-					<div id="{{ids[1]}}" style=" margin-top: 50px; margin-bottom: 50px;"></div>
+					<h4>World Map displaying the covid'19 cases in world</h4>
+					<div id="{{ids[0]}}" style=" margin-top: 50px; margin-bottom: 50px;"></div>
 				</div>
 			</div>
 
 			<!--bottom two charts-->		
-			<div class="row mb-6">
-				<div class="col-12">	
-				</div>
-			</div>
 		
 		</div>
 	<div>
