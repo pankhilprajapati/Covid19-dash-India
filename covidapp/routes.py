@@ -18,6 +18,7 @@ def index():
             all_states = stat_state,
             all_cases = stat_confirmed,
             all_recover = stat_recover,
+            all_active= stat_active,
             all_death = stat_deaths,
             district = districtfor 
             )
