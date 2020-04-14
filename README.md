@@ -5,6 +5,16 @@ pulled directly from the API and then visualized using Plotly.
 
 This is a project in development for the Udacity Data Scientist Nanodegree. 
 
+Uses the api of 
+
+- Covid19India api
+
+libraries
+- plotly
+- pandas
+- numpy
+- flask
+
 ## Prerequisites
 
 To install the flask app, you need:
