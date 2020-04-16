@@ -1,7 +1,7 @@
 import pandas as pd
 import requests
 import plotly.graph_objs as go
-
+import re
 
 def data_wrangling(dataset):
     """Clean world bank data for a visualizaiton dashboard
@@ -92,11 +92,64 @@ def map_fig():
         bearing=0,
         style='outdoors',
         pitch=0,
-        zoom=5,
+        zoom=1,
     ))
     
+    map_1=[]
+    map_1.append(go.Bar(
+            x = data_country[:20].displayName.tolist(),
+            y = data_country[:20].totalConfirmed.tolist()
+        ))
+    
+    layout_1=[]
+
+    layout_1 = dict(title='Covid19 cases of Top 20 Countries ',
+    xaxis = dict(title='Country',),
+    yaxis = dict(title='Population Infected'),
+    )
+
+    map_2=[]
+    data_20 = pd.DataFrame([])
+    c=0
+    top_20=[]
+    top_c=[]
+    surl = "https://api.covid19api.com/countries"
+    sresponse = requests.get(surl)
+    slug = sresponse.json()
+    data_slug = pd.DataFrame(slug)
+
+    for l in data_country['displayName'][:10].append(pd.Series(['India'])):
+        for lw in data_slug['Country']:
+            batRegex = re.compile("{}".format(l)) 
+            if batRegex.match(lw):
+                top_c.append(lw)
+                top_20.append(str(data_slug[data_slug['Country']==lw]['Slug']).split('\n')[0].split()[1])
+    for i in top_20:
+        url = "https://api.covid19api.com/total/country/"+i+"/status/confirmed"
+        response = requests.get(url)
+        a = response.json()
+        if len(a)!=0:
+            data_20 = data_20.append(pd.DataFrame(a))
+    data_20['Country'].astype(str)
+    data_20 = data_20.sort_values(by=['Cases'],ascending=False)
+    country_lst= data_20.Country.unique()
+    for country in country_lst[:20]:
+        map_2.append((go.Scatter(
+        x=data_20[data_20['Country']==country]['Date'], 
+        y=data_20[data_20['Country']==country]['Cases'],
+        name=country)))
+
+    layout_2 = dict(title= "Rise in cases",
+               xaxis = dict(title='Date/Month/Year'),
+               yaxis = dict(title='Population Infected'),
+               )
+
     map_fig=[]
     map_fig.append(dict(data=graph_map, layout=layout_map))
+    map_fig.append(dict(data=map_1, layout=layout_1))
+    map_fig.append(dict(data=map_2, layout=layout_2))
+
+
     return map_fig,world_tot
 
 def return_fig():
