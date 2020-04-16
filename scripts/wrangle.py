@@ -76,7 +76,7 @@ def map_fig():
         lon=data_country['long'],
         mode='markers',
         
-        marker=go.Scattermapbox.Marker(
+        marker=go.scattermapbox.Marker(
             size=8
         ),
     text = "Place: "+data_country.displayName.map(str)+"<br>"+"TotalCase: "+data_country.totalConfirmed.map(str)+"<br>"+"TotalRecovered: " +data_country.totalRecovered.map(str)+"<br>"+"TotalDeaths: "+data_country.totalDeaths.map(str),
