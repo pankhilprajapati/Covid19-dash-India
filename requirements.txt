@@ -15,7 +15,7 @@ nbformat==4.4.0
 numpy==1.14.3
 pandas==0.22.0
 pipenv==11.10.4
-plotly==2.6.0
+plotly==4.6.0
 python-dateutil==2.7.3
 pytz==2018.4
 requests==2.20.0
