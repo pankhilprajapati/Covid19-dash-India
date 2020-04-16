@@ -72,8 +72,8 @@ def map_fig():
     data_state= data_state.append(data_left)
     graph_map=[]
     graph_map.append(go.Scattermapbox(
-        lat=data_state['lat'],
-        lon=data_state['long'],
+        lat=data_country['lat'],
+        lon=data_country['long'],
         mode='markers',
         
         marker=go.scattermapbox.Marker(
