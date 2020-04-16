@@ -61,25 +61,25 @@ def map_fig():
     data_country = pd.DataFrame(world['areas'].tolist())
     just=[]
     l=[]
-    # for i in range(len(data_country['areas'])):
-    #     for d in range(len(data_country['areas'][i])):
-    #         if len(data_country['areas'][i][d]['areas']) == 0:
-    #             just.append(data_country['areas'][i][d])
-    #         for j in data_country['areas'][i][d]['areas']:
-    #             l.append(j)
-    # data_left =  pd.DataFrame(just)
-    # data_state = pd.DataFrame(l)
-    # data_state= data_state.append(data_left)
+    for i in range(len(data_country['areas'])):
+        for d in range(len(data_country['areas'][i])):
+            if len(data_country['areas'][i][d]['areas']) == 0:
+                just.append(data_country['areas'][i][d])
+            for j in data_country['areas'][i][d]['areas']:
+                l.append(j)
+    data_left =  pd.DataFrame(just)
+    data_state = pd.DataFrame(l)
+    data_state= data_state.append(data_left)
     graph_map=[]
     graph_map.append(go.Scattermapbox(
-        lat=data_country['lat'],
-        lon=data_country['long'],
+        lat=data_state['lat'],
+        lon=data_state['long'],
         mode='markers',
         
         marker=go.scattermapbox.Marker(
             size=8
         ),
-    text = "Place: "+data_country.displayName.map(str)+"<br>"+"TotalCase: "+data_country.totalConfirmed.map(str)+"<br>"+"TotalRecovered: " +data_country.totalRecovered.map(str)+"<br>"+"TotalDeaths: "+data_country.totalDeaths.map(str),
+    text = "Place: "+data_state.displayName.map(str)+"<br>"+"TotalCase: "+data_state.totalConfirmed.map(str)+"<br>"+"TotalRecovered: " +data_state.totalRecovered.map(str)+"<br>"+"TotalDeaths: "+data_state.totalDeaths.map(str),
     ))
 
     layout_map=dict(hovermode='closest',
