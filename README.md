@@ -3,7 +3,7 @@
 This is a flask app that visualizes data from the Covid'19 India API. Data is
 pulled directly from the API and then visualized using Plotly.
 
-This is a project in development for the Udacity Data Scientist Nanodegree. 
+This is a project in development 
 
 Uses the api of 
 
