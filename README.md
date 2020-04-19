@@ -7,7 +7,9 @@ This is a project in development
 
 Uses the api of 
 
-- Covid19India api
+- [COVID19-India API](https://documenter.getpostman.com/view/10724784/SzYXXKmA?version=latest)
+- [Coronavirus COVID19 API (covid19api.com)](https://documenter.getpostman.com/view/10808728/SzS8rjbc?version=latest)
+- [Bing covid 19](https://bing.com/covid/)
 
 libraries
 - plotly
