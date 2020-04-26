@@ -1,7 +1,7 @@
 from covidapp import app
 from flask import render_template,jsonify
 import pandas as pd
-from scripts.wrangle import data_wrangling,return_fig,return_data,map_fig
+from scripts.wrangle import data_wrangling,return_fig,return_data
 
 import plotly.graph_objs as go
 import plotly, json
@@ -41,12 +41,13 @@ def visual():
 
 @app.route('/worldmap')
 def worldmap():
-    figs,world_tot = map_fig()
-    fat = round((world_tot[1]/world_tot[0])*100,2)
-    ids= ['figure-{}'.format(i) for i, _ in enumerate(figs)]
-    figureJSON = json.dumps(figs, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template('map.html',ids=ids, 
-            figureJSON = figureJSON,
-            world_tot = world_tot,
-            fat = fat
-            )
+    # figs,world_tot = map_fig()
+    # fat = round((world_tot[1]/world_tot[0])*100,2)
+    # ids= ['figure-{}'.format(i) for i, _ in enumerate(figs)]
+    # figureJSON = json.dumps(figs, cls=plotly.utils.PlotlyJSONEncoder)
+    # return render_template('map.html',ids=ids, 
+    #         figureJSON = figureJSON,
+    #         world_tot = world_tot,
+    #         fat = fat
+    #         )
+    return render_template('devlop.html')
