@@ -209,11 +209,16 @@ def return_fig():
     data_all = data_wrangling('https://api.covid19india.org/data.json')
     df_cases = pd.DataFrame(data_all['cases_time_series'])
     graph_3 = []
-    graph_3.append(go.Scatter(
+    reccon = ['totalconfirmed','totalrecovered']
+    for cat in reccon:
+        graph_3.append(go.Scatter(
         x=df_cases['date'], 
-        y=df_cases['totalconfirmed'],
-        mode = 'lines'
+        y=df_cases[cat],
+        mode = 'lines',
+        name = cat
         ))
+        
+    
     layout_3 = dict(title= 'Total cases',
                xaxis = dict(title='date/month',),
                yaxis = dict(title='No. of cases'),
