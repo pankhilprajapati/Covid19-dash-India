@@ -2,6 +2,7 @@ import pandas as pd
 import requests
 import plotly.graph_objs as go
 import re
+from datetime import *
 
 def data_wrangling(dataset):
     """Clean world bank data for a visualizaiton dashboard
@@ -54,32 +55,27 @@ def map_fig():
     return:
         map figure object
     '''
+    total_stats = "https://covid-api.com/api/reports/total"
+    res_totstat = requests.get(total_stats)
+    tot_json = res_totstat.json()
+    tot_data = tot_json['data']
 
-    world = data_wrangling('https://bing.com/covid/data')
-    world = pd.DataFrame(world)
-    world_tot = [world.totalConfirmed.tolist()[0],world.totalDeaths.tolist()[0],world.totalRecovered.tolist()[0]]
-    data_country = pd.DataFrame(world['areas'].tolist())
-    just=[]
-    l=[]
-    for i in range(len(data_country['areas'])):
-        for d in range(len(data_country['areas'][i])):
-            if len(data_country['areas'][i][d]['areas']) == 0:
-                just.append(data_country['areas'][i][d])
-            for j in data_country['areas'][i][d]['areas']:
-                l.append(j)
-    data_left =  pd.DataFrame(just)
-    data_state = pd.DataFrame(l)
-    data_state= data_state.append(data_left)
+    Map = "https://covid-api.com/api/reports"
+    response = requests.get(Map)
+    new_json = response.json()
+    world = pd.DataFrame(new_json['data'])
+    region = pd.DataFrame(world['region'].tolist())
+    df = pd.concat([world,region],axis=1)
     graph_map=[]
     graph_map.append(go.Scattermapbox(
-        lat=data_state['lat'],
-        lon=data_state['long'],
+        lat=df['lat'],
+        lon=df['long'],
         mode='markers',
         
         marker=go.scattermapbox.Marker(
             size=8
         ),
-    text = "Place: "+data_state.displayName.map(str)+"<br>"+"TotalCase: "+data_state.totalConfirmed.map(str)+"<br>"+"TotalRecovered: " +data_state.totalRecovered.map(str)+"<br>"+"TotalDeaths: "+data_state.totalDeaths.map(str),
+    text = "Place: "+df.name.map(str)+"<br>"+"Province: "+df.province.map(str)+"<br>"+"TotalCase: "+df.confirmed.map(str)+"<br>"+"TotalRecovered: " +df.recovered.map(str)+"<br>"+"TotalDeaths: "+df.deaths.map(str),
     ))
 
     layout_map=dict(hovermode='closest',
@@ -95,10 +91,11 @@ def map_fig():
         zoom=1,
     ))
     
+    bardata = pd.DataFrame(df.groupby(['name'])['confirmed'].sum().sort_values(ascending=False))
     map_1=[]
     map_1.append(go.Bar(
-            x = data_country[:20].displayName.tolist(),
-            y = data_country[:20].totalConfirmed.tolist()
+            x = bardata.index.tolist()[:20],
+            y = bardata['confirmed'].values[:20].tolist()
         ))
     
     layout_1=[]
@@ -109,38 +106,21 @@ def map_fig():
     )
 
     map_2=[]
-    data_20 = pd.DataFrame([])
-    c=0
-    top_20=[]
-    top_c=[]
-    surl = "https://api.covid19api.com/countries"
-    sresponse = requests.get(surl)
-    slug = sresponse.json()
-    data_slug = pd.DataFrame(slug)
-
-    for l in data_country['displayName'][:10].append(pd.Series(['India'])):
-        for lw in data_slug['Country']:
-            batRegex = re.compile("{}".format(l)) 
-            if batRegex.match(lw):
-                top_c.append(lw)
-                top_20.append(str(data_slug[data_slug['Country']==lw]['Slug']).split('\n')[0].split()[1])
-    for i in top_20:
-        url = "https://api.covid19api.com/total/country/"+i+"/status/confirmed"
-        response = requests.get(url)
-        a = response.json()
-        if len(a)!=0:
-            data_20 = data_20.append(pd.DataFrame(a))
-    data_20['Country'].astype(str)
-    data_20 = data_20.sort_values(by=['Cases'],ascending=False)
-    country_lst= data_20.Country.unique()
-    for country in country_lst[:20]:
+    log_chart = "https://api.covid19api.com/all"
+    res_logchart = requests.get(log_chart)
+    log_json = res_logchart.json()
+    doom = pd.DataFrame(log_json)
+    doom = doom.sort_values(by=['Confirmed','Date'],ascending = False)
+    doom['Date'] = pd.to_datetime(doom['Date'])
+    top_country = doom['Country'].unique()[:20]
+    for country in top_country:
         map_2.append((go.Scatter(
-        x=data_20[data_20['Country']==country]['Date'], 
-        y=data_20[data_20['Country']==country]['Cases'],
+        x=doom[(doom['Country'] == country) & (doom['Province'] == '')]['Date'].apply(lambda x:int(str(x - doom.iloc[-1,:]['Date']).split()[0])).tolist(), 
+        y=doom[(doom['Country'] == country) & (doom['Province'] == '')]['Confirmed'].tolist(),
         name=country)))
 
-    layout_2 = dict(title= "Rise in cases",
-               xaxis = dict(title='Date/Month/Year'),
+    layout_2 = dict(title= "Rise in cases in Logarthmic scale",
+               xaxis = dict(title='No. of Days'),
                yaxis = dict(title='Population Infected'),
                )
 
@@ -150,7 +130,7 @@ def map_fig():
     map_fig.append(dict(data=map_2, layout=layout_2))
 
 
-    return map_fig,world_tot
+    return map_fig,tot_data
 
 def return_fig():
     """Creates four plotly visualizations
