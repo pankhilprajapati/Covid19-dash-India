@@ -112,16 +112,20 @@ def map_fig():
     doom = pd.DataFrame(log_json)
     doom = doom.sort_values(by=['Confirmed','Date'],ascending = False)
     doom['Date'] = pd.to_datetime(doom['Date'])
-    top_country = doom['Country'].unique()[:20]
+    top_country = doom['Country'].unique()[:15]
     for country in top_country:
         map_2.append((go.Scatter(
         x=doom[(doom['Country'] == country) & (doom['Province'] == '')]['Date'].apply(lambda x:int(str(x - doom.iloc[-1,:]['Date']).split()[0])).tolist(), 
         y=doom[(doom['Country'] == country) & (doom['Province'] == '')]['Confirmed'].tolist(),
-        name=country)))
+        name=country,
+        )))
 
     layout_2 = dict(title= "Rise in cases in Logarthmic scale",
                xaxis = dict(title='No. of Days'),
-               yaxis = dict(title='Population Infected'),
+               yaxis = dict(title='Population Infected',
+                            type= 'log',
+                            ),
+               
                )
 
     map_fig=[]
