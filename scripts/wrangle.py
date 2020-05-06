@@ -114,8 +114,9 @@ def map_fig():
     doom['Date'] = pd.to_datetime(doom['Date'])
     top_country = doom['Country'].unique()[:15]
     for country in top_country:
+        date =doom[(doom['Country'] == country) & (doom['Province'] == '')]['Date']
         map_2.append((go.Scatter(
-        x=doom[(doom['Country'] == country) & (doom['Province'] == '')]['Date'].apply(lambda x:int(str(x - doom.iloc[-1,:]['Date']).split()[0])).tolist(), 
+        x=date.apply(lambda x:(x - date.iloc[-1]).days).tolist(), 
         y=doom[(doom['Country'] == country) & (doom['Province'] == '')]['Confirmed'].tolist(),
         name=country,
         )))
